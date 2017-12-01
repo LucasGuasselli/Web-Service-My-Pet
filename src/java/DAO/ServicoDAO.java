@@ -6,11 +6,9 @@
 package DAO;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ public class ServicoDAO {
     private FuncionarioDAO fDAO = new FuncionarioDAO();
     private TipoServicoDAO tsDAO = new TipoServicoDAO();
 
-    private static FuncionarioDAO instancia;
+    private static ServicoDAO instancia;
     
     public Connection conectar(String sql) throws SQLException, ClassNotFoundException {
         conexao = ConnectionFactory.getConnection();
@@ -39,17 +37,18 @@ public class ServicoDAO {
         return conexao;
     }//fecha conectar    
     
-    public static synchronized FuncionarioDAO getInstance(){
+    public static synchronized ServicoDAO getInstance(){
         if(instancia == null){
-            instancia = new FuncionarioDAO();
+            instancia = new ServicoDAO();
         }
         return instancia;
     }
+    
     public void cadastrarServico(Servico servico) throws SQLException, ClassNotFoundException{
         
         try{   
             String sql = "insert into servico(codCliente, nomePet, dia, horario, codFunc, codTipoServico,"
-                    + " valorServico, observacao, status ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + " valorServico, observacao) values (?, ?, ?, ?, ?, ?, ?, ?)";
                conectar(sql);
                     comando.setInt(1,servico.getCodCliente());
                     comando.setString(2,servico.getNomePet());
@@ -59,7 +58,7 @@ public class ServicoDAO {
                     comando.setInt(6,servico.getCodTipoServico());
                     comando.setDouble(7,servico.getValorServico());
                     comando.setString(8,servico.getObservacao());
-                    comando.setBoolean(9,servico.isStatus());
+                  //  comando.setBoolean(9,servico.isStatus());
                 
                                         
                  if(comando.executeUpdate()>0){
@@ -77,7 +76,7 @@ public class ServicoDAO {
     public void editarServico(Servico servico) throws SQLException, ClassNotFoundException{
         try{
             String sql = "UPDATE servico SET codCliente = ?, nomePet = ?, dia = ?, horario = ?,"
-                    + " codFunc = ?, codTipoServico = ??, valorServico = ?, observacao = ?, status = ? "
+                    + " codFunc = ?, codTipoServico = ??, valorServico = ?, observacao = ? "
                     + "WHERE codServico = ?";
  
             conectar(sql);
@@ -89,11 +88,14 @@ public class ServicoDAO {
             comando.setInt(6,servico.getCodTipoServico());
             comando.setDouble(7,servico.getValorServico());
             comando.setString(8,servico.getObservacao());
-            comando.setBoolean(9,servico.isStatus()); 
+            //comando.setBoolean(9,servico.isStatus()); 
             
-            comando.setInt(10,servico.getCodServico());
+            comando.setInt(9,servico.getCodServico());
+
+            comando.executeUpdate();
+
         }catch (SQLException e) {
-                 throw new SQLException("\nErro ao editar funcionario!");
+                 throw new SQLException("\nErro ao editar servico!");
         } finally {
             conexao.close();
             comando.close();
@@ -143,8 +145,7 @@ public class ServicoDAO {
                 Funcionario func = fDAO.retornaFuncionarioPorCod(codFunc);
                 TipoServico tipoServ = tsDAO.retornaTipoServicoPorCod(codTipoServico);
                 
-                Servico serv = new Servico(codServico, cli, nomePet, dia, horario, func, tipoServ,
-                                            valorServico, observacao);
+                Servico serv = new Servico(codServico, cli, nomePet, dia, horario, func, tipoServ, observacao);
 
                 return serv;
             }//terminar caminho feliz (IF)
@@ -175,14 +176,13 @@ public class ServicoDAO {
                 int codTipoServico = resultado.getInt("codTipoServico");
                 double valorServico = resultado.getDouble("valorServico");
                 String observacao = resultado.getString("observacao");
-                boolean status = resultado.getBoolean("status");
+               // boolean status = resultado.getBoolean("status");
                 
                 Cliente cli = cDAO.retornaClientePorId(codCliente);
                 Funcionario func = fDAO.retornaFuncionarioPorCod(codFunc);
                 TipoServico tipoServ = tsDAO.retornaTipoServicoPorCod(codTipoServico);
                 
-                Servico serv = new Servico(codServico, cli, nomePet, dia, horario, func, tipoServ,
-                                            valorServico, observacao);
+                Servico serv = new Servico(codServico, cli, nomePet, dia, horario, func, tipoServ, observacao);
 
                     listaServicos.add(serv);                    
             }//fecha while

@@ -16,7 +16,12 @@ public class TipoServico {
     private double valor;
 
     public TipoServico() {
+        
     }
+
+    
+    
+    
 
     public TipoServico(int codTipoServico, String nome, String descricao, double valor) {
         this.codTipoServico = codTipoServico;
