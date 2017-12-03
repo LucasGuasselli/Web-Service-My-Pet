@@ -5,32 +5,19 @@
  */
 package ws;
 
+import org.glassfish.jersey.server.ResourceConfig;
+
 import java.util.Set;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-
-@javax.ws.rs.ApplicationPath("webresources")
-public class ApplicationConfig extends Application {
-
-    @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new java.util.HashSet<>();
-        addRestResourceClasses(resources);
-        return resources;
+/**
+ *
+ * @author lucas
+ */
+@ApplicationPath("webresources")
+public class ApplicationConfig extends ResourceConfig {
+    public ApplicationConfig() {
+        packages("ws", "jersey");
     }
-
-    /**
-     * Do not modify addRestResourceClasses() method.
-     * It is automatically populated with
-     * all resources defined in the project.
-     * If required, comment out calling this method in getClasses().
-     */
-    private void addRestResourceClasses(Set<Class<?>> resources) {
-        //resources.add(ws.ClienteWS.class);
-        resources.add(ws.ClienteWS.class);
-        resources.add(ws.FuncionarioWS.class);
-        resources.add(ws.ServicoWS.class);
-        resources.add(ws.TipoServicoWS.class);
-    }
-    
 }
