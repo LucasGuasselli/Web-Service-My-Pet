@@ -23,13 +23,13 @@ public class Servico {
     private int codTipoServico;
     private double valorServico;
     private String observacao;
-    private boolean status = false;
+    //private boolean status = false;
 
     public Servico() {
     }
 
     public Servico(int CodServico, Cliente cliente, String nomePet, int dia, String horario, 
-            Funcionario funcionario, TipoServico tipoServico, double valorServico, String observacao) {
+            Funcionario funcionario, TipoServico tipoServico, String observacao) {
         this.CodServico = CodServico;
         this.cliente = cliente;
         this.codCliente = cliente.getCodCliente();
@@ -40,7 +40,7 @@ public class Servico {
         this.codFunc = funcionario.getCodFunc();
         this.tipoServico = tipoServico;
         this.codTipoServico = tipoServico.getCodTipoServico();
-        this.valorServico = valorServico;
+        this.valorServico = tipoServico.getValor();
         this.observacao = observacao;
     }
 
@@ -140,7 +140,7 @@ public class Servico {
     public void setObservacao(String observacao) {
         this.observacao = observacao;
     }
-
+/*
     public boolean isStatus() {
         return status;
     }
@@ -148,7 +148,7 @@ public class Servico {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
+*/
    
     
     

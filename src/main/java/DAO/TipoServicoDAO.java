@@ -6,16 +6,12 @@
 package DAO;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import model.Funcionario;
-import model.Servico;
 import model.TipoServico;
 import persistencia.ConnectionFactory;
 
@@ -27,7 +23,7 @@ public class TipoServicoDAO {
     DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
 
-    private static FuncionarioDAO instancia;
+    private static TipoServicoDAO instancia;
     
     public Connection conectar(String sql) throws SQLException, ClassNotFoundException {
         conexao = ConnectionFactory.getConnection();
@@ -35,16 +31,16 @@ public class TipoServicoDAO {
         return conexao;
     }//fecha conectar    
     
-    public static synchronized FuncionarioDAO getInstance(){
+    public static synchronized TipoServicoDAO getInstance(){
         if(instancia == null){
-            instancia = new FuncionarioDAO();
+            instancia = new TipoServicoDAO();
         }
         return instancia;
     }
     public void cadastrarTipoServico(TipoServico tipoServico) throws SQLException, ClassNotFoundException{
         
         try{   
-            String sql = "insert into tipoServico(nome, descricao, valor) values (?, ?, ?, ?)";
+            String sql = "insert into tipoServico(nome, descricao, valor) values (?, ?, ?)";
                conectar(sql);
                     comando.setString(1,tipoServico.getNome());
                     comando.setString(2,tipoServico.getDescricao());
@@ -62,10 +58,9 @@ public class TipoServicoDAO {
     }//fecha cadastrarTipoServico
     
    
-    public void editarServico(TipoServico tipoServico) throws SQLException, ClassNotFoundException{
+    public void editarTipoServico(TipoServico tipoServico) throws SQLException, ClassNotFoundException{
         try{
-            String sql = "UPDATE servico SET nome = ?, descricao = ?, valor = ?"
-                    + "WHERE codTipoServico = ?";
+            String sql = "UPDATE tipoServico SET nome = ?, descricao = ?, valor = ? WHERE codTipoServico = ?";
  
             conectar(sql);
             comando.setString(1,tipoServico.getNome());
@@ -73,8 +68,9 @@ public class TipoServicoDAO {
             comando.setDouble(3,tipoServico.getValor());             
             
             comando.setInt(4,tipoServico.getCodTipoServico());
+            comando.executeUpdate();
         }catch (SQLException e) {
-                 throw new SQLException("\nErro ao editar tipo de servico!");
+                 throw new SQLException("\nErro ao editar tipo de tipo de servico!");
         } finally {
             conexao.close();
             comando.close();
