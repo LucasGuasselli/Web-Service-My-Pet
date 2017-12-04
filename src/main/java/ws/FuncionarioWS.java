@@ -57,8 +57,8 @@ public class FuncionarioWS {
     @GET
     @Path("/{codFunc}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Funcionario getFuncionarioPorCpf(@PathParam("codFunc") String cpf) throws SQLException, ClassNotFoundException{
-        return FuncionarioDAO.getInstance().retornaFuncionarioPorCpf(cpf);
+    public Funcionario getFuncionarioPorCpf(@PathParam("codFunc") int cod) throws SQLException, ClassNotFoundException{
+        return FuncionarioDAO.getInstance().retornaFuncionarioPorCod(cod);
     }
     
     @POST
